@@ -52,6 +52,29 @@
       <div class="cart__items" id="main-cart-items" data-id="{{ section.id }}">
         <div class="js-contents">
           {%- if cart != empty -%}
+            {% if customer %}
+              {% liquid
+                assign share_cart_url = shop.url | append: routes.cart_update_url | append: '?'
+                for item in cart.items
+                  if forloop.last
+                    assign share_cart_url = share_cart_url | append: 'updates[' | append: item.variant.id | append: ']=' | append: item.quantity
+                  else
+                    assign share_cart_url = share_cart_url | append: 'updates[' | append: item.variant.id | append: ']=' | append: item.quantity | append: '&'
+                  endif
+                endfor
+              %}
+
+              <share-cart data-url="{{ share_cart_url }}">
+                <button class="button button--primary" type="button">Share my Cart</button>
+              </share-cart>
+
+              <script src="{{ 'share-cart.js' | asset_url }}" defer="defer"></script>
+            {% else %}
+              <div>
+                <a class="button button--primary" href="{{ routes.account_login_url }}">Share my Cart</a>
+              </div>
+            {% endif %}
+
             <table class="cart-items">
               <caption class="visually-hidden">
                 {{ 'sections.cart.title' | t }}
