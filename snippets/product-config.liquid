@@ -1,0 +1,433 @@
+{% if product.selected_or_first_available_variant.available %}
+  {% render 'style-product-config' %}
+
+  {%- liquid
+    assign steps = 'Model, Ventilation, Molding, Size Modification, Order Options' | split: ', '
+    assign variant = product.selected_or_first_available_variant
+    assign base_price = variant.price
+  -%}
+
+  <product-configurator
+    data-variant-id="{{ variant.id }}"
+    data-base-price="{{ base_price }}"
+    data-money-format="{{ shop.money_format | escape }}"
+    {{ block.shopify_attributes }}
+  >
+    <!-- Step Navigation -->
+    <div class="pc-steps" data-steps-nav>
+      {% for step in steps %}
+        <button
+          type="button"
+          class="pc-step{% if forloop.first %} is-active{% endif %}"
+          data-step-button="{{ forloop.index }}"
+        >
+          {{ forloop.index }} - {{ step }}
+        </button>
+      {% endfor %}
+    </div>
+
+    <!-- ========================= -->
+    <!-- STEP 1 -->
+    <!-- ========================= -->
+    <div class="pc-panel is-active" data-step-panel="1">
+      <!-- Color Option -->
+      <div class="pc-field">
+        <label class="pc-label"> Color Option </label>
+
+        <div class="pc-radio-list">
+          <label>
+            <input
+              type="radio"
+              name="color_option"
+              value="Standard"
+              data-field
+              data-conditional-trigger
+            >
+            Standard
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="color_option"
+              value="Custom Paint"
+              data-field
+              data-conditional-trigger
+            >
+            Custom Paint
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="color_option"
+              value="Color Match"
+              data-field
+              data-conditional-trigger
+            >
+            Color Match
+          </label>
+        </div>
+      </div>
+
+      <!-- Color -->
+      <div class="pc-field">
+        <label class="pc-label"> Color / Finish </label>
+        <select
+          name="color"
+          data-field
+        >
+          <option value="">Select Color</option>
+          <option value="White">White</option>
+          <option value="Black">Black</option>
+          <option value="Stainless Steel">Stainless Steel</option>
+          <option value="Brushed Brass">Brushed Brass</option>
+        </select>
+      </div>
+
+      <!-- SW Color -->
+      <div
+        class="pc-field hidden"
+        data-conditional-wrapper
+        data-conditional-field="color_option"
+        data-conditional-operator="equals"
+        data-conditional-value="Custom Paint"
+      >
+        <label class="pc-label"> Sherwin-Williams Color Code </label>
+        <input
+          type="text"
+          name="sw_color_code"
+          placeholder="SW 7015"
+          data-field
+        >
+      </div>
+
+      <!-- Color Match -->
+      <div
+        class="pc-field hidden"
+        data-conditional-wrapper
+        data-conditional-field="color_option"
+        data-conditional-operator="equals"
+        data-conditional-value="Color Match"
+      >
+        <label class="pc-label"> Color Match Selection </label>
+
+        <select
+          name="color_match_selection"
+          data-field
+        >
+          <option value="">Select</option>
+          <option value="Send us a sample">Send us a sample</option>
+          <option value="Provide SW code">Provide Sherwin-Williams code</option>
+          <option value="Provide RAL code">Provide RAL code</option>
+        </select>
+      </div>
+
+      <!-- Size -->
+      <div class="pc-field">
+        <label class="pc-label"> Size (Width) </label>
+
+        <div class="pc-radio-list">
+          <label>
+            <input type="radio" name="size" value="30 inch" data-field>
+            30"
+          </label>
+
+          <label>
+            <input type="radio" name="size" value="36 inch" data-field>
+            36"
+          </label>
+
+          <label>
+            <input type="radio" name="size" value="42 inch" data-field>
+            42"
+          </label>
+
+          <label>
+            <input type="radio" name="size" value="48 inch" data-field>
+            48"
+          </label>
+
+          <label>
+            <input type="radio" name="size" value="54 inch" data-field>
+            54"
+          </label>
+
+          <label>
+            <input type="radio" name="size" value="60 inch" data-field>
+            60"
+          </label>
+        </div>
+      </div>
+
+      <button type="button" data-complete-step>Complete Step</button>
+    </div>
+
+    <!-- ========================= -->
+    <!-- STEP 2 -->
+    <!-- ========================= -->
+    <div class="pc-panel" data-step-panel="2">
+      <!-- Ventilation -->
+      <div class="pc-field">
+        <label class="pc-label"> Ventilation Options </label>
+
+        <div class="pc-radio-list">
+          <label>
+            <input
+              type="radio"
+              name="ventilation_type"
+              value="Ducted"
+              data-field
+              data-conditional-trigger
+            >
+            Ducted
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="ventilation_type"
+              value="Non-Ducted"
+              data-field
+              data-conditional-trigger
+            >
+            Non-Ducted
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="ventilation_type"
+              value="Ductless Conversion Kit"
+              data-field
+              data-conditional-trigger
+            >
+            Ductless Conversion Kit
+          </label>
+        </div>
+      </div>
+
+      <!-- Insert Brand -->
+      <div
+        class="pc-field hidden"
+        data-conditional-wrapper
+        data-conditional-field="ventilation_type"
+        data-conditional-operator="equals"
+        data-conditional-value="Ducted"
+      >
+        <label class="pc-label"> Insert Brand </label>
+
+        <select
+          name="insert_brand"
+          data-field
+          data-conditional-trigger
+        >
+          <option value="">Select Brand</option>
+          <option value="Broan">Broan</option>
+          <option value="ZLine">ZLine</option>
+          <option value="Vent-A-Hood">Vent-A-Hood</option>
+          <option value="TradeWinds">TradeWinds</option>
+          <option value="Hauslane">Hauslane</option>
+        </select>
+      </div>
+
+      <!-- Broan -->
+      <div
+        class="pc-field hidden"
+        data-conditional-wrapper
+        data-conditional-field="insert_brand"
+        data-conditional-operator="equals"
+        data-conditional-value="Broan"
+      >
+        <label class="pc-label"> Broan CFM Selection </label>
+
+        <select name="broan_cfm" data-field>
+          <option value="">Select</option>
+          <option value="270 CFM">270 CFM - Standard</option>
+          <option value="400 CFM" data-price-adder="89">400 CFM (+$89)</option>
+          <option value="600 CFM" data-price-adder="149">600 CFM (+$149)</option>
+        </select>
+      </div>
+
+      <button type="button" data-complete-step>Complete Step</button>
+    </div>
+
+    <!-- ========================= -->
+    <!-- STEP 3 -->
+    <!-- ========================= -->
+    <div class="pc-panel" data-step-panel="3">
+      <div class="pc-field">
+        <label class="pc-label"> Trim Options </label>
+
+        <div class="pc-radio-list">
+          <label>
+            <input
+              type="radio"
+              name="trim_option"
+              value="No Trim"
+              data-field
+              data-conditional-trigger
+            >
+            No trim
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="trim_option"
+              value="Standard Trim"
+              data-field
+              data-conditional-trigger
+            >
+            Standard trim
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="trim_option"
+              value="Premium Trim"
+              data-field
+              data-conditional-trigger
+            >
+            Premium trim
+          </label>
+        </div>
+      </div>
+
+      <!-- Trim Delivery -->
+      <div
+        class="pc-field hidden"
+        data-conditional-wrapper
+        data-conditional-field="trim_option"
+        data-conditional-operator="not_equals"
+        data-conditional-value="No Trim"
+      >
+        <label class="pc-label"> How Would You Like Your Trim? </label>
+
+        <div class="pc-radio-list">
+          <label>
+            <input
+              type="radio"
+              name="trim_delivery"
+              value="Pre-installed"
+              data-field
+            >
+            Pre-installed
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="trim_delivery"
+              value="Ship Separately"
+              data-field
+            >
+            Ship separately
+          </label>
+        </div>
+      </div>
+
+      <button type="button" data-complete-step>Complete Step</button>
+    </div>
+
+    <!-- ========================= -->
+    <!-- STEP 4 -->
+    <!-- ========================= -->
+    <div class="pc-panel" data-step-panel="4">
+      <div class="pc-info">Size modifications are custom. Lead time adds 5–7 business days to your order.</div>
+
+      <div class="pc-field">
+        <label class="pc-label"> Increase Depth </label>
+
+        <div class="pc-radio-list">
+          <label>
+            <input type="radio" name="increase_depth" value="No" data-field>
+            No
+          </label>
+
+          <label>
+            <input type="radio" name="increase_depth" value="Yes" data-field data-price-adder="135">
+            Yes (+$135)
+          </label>
+        </div>
+      </div>
+
+      <button type="button" data-complete-step>Complete Step</button>
+    </div>
+
+    <!-- ========================= -->
+    <!-- STEP 5 -->
+    <!-- ========================= -->
+    <div class="pc-panel" data-step-panel="5">
+      <div class="pc-field">
+        <label class="pc-label"> Rush Manufacturing </label>
+
+        <div class="pc-radio-list">
+          <label>
+            <input
+              type="radio"
+              name="rush_manufacturing"
+              value="Standard"
+              data-field
+            >
+            Standard - 4 to 6 weeks
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="rush_manufacturing"
+              value="Rush"
+              data-field
+              data-price-adder="299"
+            >
+            Rush - 2 weeks (+$299)
+          </label>
+        </div>
+      </div>
+
+      <div class="pc-field">
+        <label class="pc-label"> Special Instructions </label>
+
+        <textarea
+          name="special_instructions"
+          data-field
+        ></textarea>
+      </div>
+
+      <button type="button" data-complete-step>Complete Step</button>
+    </div>
+    
+    <pre data-result></pre>
+
+    <!-- Footer -->
+    <div class="pc-footer">
+      <div class="pc-total-price">
+        Total:
+        <span data-total-price>
+          {{ base_price | money }}
+        </span>
+      </div>
+
+      <button
+        type="button button--primary"
+        disabled
+        data-add-to-cart
+      >
+        Complete all steps to add
+      </button>
+    </div>
+  </product-configurator>
+
+  <script src="{{ 'product-config.js' | asset_url }}" defer="defer"></script>
+{% else %}
+  <div class="pc-footer" {{ block.shopify_attributes }}>
+    <button
+      class="button button--primary"
+      disabled
+    >
+      Currently Unavailable
+    </button>
+  </div>
+{% endif %}

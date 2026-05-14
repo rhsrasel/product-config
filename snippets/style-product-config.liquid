@@ -1,0 +1,213 @@
+{% stylesheet %}
+  product-configurator {
+    display: block;
+    width: 100%;
+  }
+
+  product-configurator * {
+    box-sizing: border-box;
+  }
+
+  product-configurator button,
+  product-configurator input,
+  product-configurator select,
+  product-configurator textarea {
+    font: inherit;
+  }
+
+  .pc-wrapper {
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    padding: 32px;
+    background: #fff;
+  }
+
+  /* Step Navigation */
+  .pc-steps {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+
+  .pc-step {
+    appearance: none;
+    border: 1px solid #dcdcdc;
+    background: #f7f7f7;
+    color: #111;
+    border-radius: 10px;
+    padding: 14px 20px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    font-weight: 600;
+  }
+
+  .pc-step:hover {
+    background: #efefef;
+  }
+
+  .pc-step.is-active {
+    background: #111;
+    color: #fff;
+    border-color: #111;
+  }
+
+  .pc-step.completed {
+    background: #1d7a34;
+    color: #fff;
+    border-color: #1d7a34;
+  }
+
+  .pc-step.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Panels */
+  .pc-panel {
+    display: none;
+  }
+
+  .pc-panel.is-active {
+    display: block;
+  }
+
+  /* Field */
+  .pc-field {
+    margin-bottom: 24px;
+  }
+
+  .pc-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+  }
+
+  /* Inputs */
+  .pc-field input[type='text'],
+  .pc-field input[type='email'],
+  .pc-field input[type='number'],
+  .pc-field select,
+  .pc-field textarea {
+    width: 100%;
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    padding: 14px 16px;
+    outline: none;
+    transition: 0.2s ease;
+    background: #fff;
+  }
+
+  .pc-field textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .pc-field input:focus,
+  .pc-field select:focus,
+  .pc-field textarea:focus {
+    border-color: #111;
+  }
+
+  /* Radio List */
+  .pc-radio-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pc-radio-list label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+
+  .pc-radio-list label:hover {
+    border-color: #111;
+  }
+
+  .pc-radio-list input[type='radio'] {
+    margin: 0;
+  }
+
+  /* Info Box */
+  .pc-info {
+    background: #f7f7f7;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  /* Buttons */
+  [data-complete-step] {
+    appearance: none;
+    border: none;
+    background: #111;
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s ease;
+  }
+
+  [data-complete-step]:hover {
+    opacity: 0.9;
+  }
+
+  /* Footer */
+  .pc-footer {
+    margin-top: 40px;
+  }
+
+  [data-add-to-cart] {
+    width: 100%;
+    appearance: none;
+    border: none;
+    border-radius: 12px;
+    padding: 18px 24px;
+    background: #bdbdbd;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: not-allowed;
+    transition: 0.2s ease;
+  }
+
+  [data-add-to-cart]:not(:disabled) {
+    background: #111;
+    cursor: pointer;
+  }
+
+  [data-add-to-cart]:not(:disabled):hover {
+    opacity: 0.9;
+  }
+
+  /* Result */
+  [data-result] {
+    margin-top: 32px;
+    padding: 20px;
+    background: #f7f7f7;
+    border-radius: 12px;
+    overflow: auto;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  pre {
+    background: #f0f0f0;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 8px;
+    overflow: auto;
+  }
+{% endstylesheet %}

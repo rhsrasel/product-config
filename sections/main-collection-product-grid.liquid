@@ -36,6 +36,17 @@
   }
 {%- endstyle -%}
 
+{% liquid
+  assign collection = collection
+
+  assign is_wholesale_customer = false
+
+  if customer and customer.tags contains 'wholesale'
+    assign is_wholesale_customer = true
+    assign collection = collections['wholesale']
+  endif
+%}
+
 <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
   {%- paginate collection.products by section.settings.products_per_page -%}
     {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
@@ -154,6 +165,20 @@
             >
               {% assign skip_card_product_styles = false %}
               {%- for product in collection.products -%}
+                {% assign wholesale_product = false %}
+
+                {% if product.tags contains 'wholesale-only' %}
+                  {% assign wholesale_product = true %}
+                {% endif %}
+
+                {% if wholesale_product and is_wholesale_customer == false %}
+                  {% continue %}
+                {% endif %}
+
+                {% if wholesale_product == false and is_wholesale_customer %}
+                  {% continue %}
+                {% endif %}
+
                 {% assign lazy_load = false %}
                 {%- if forloop.index > 2 -%}
                   {%- assign lazy_load = true -%}
@@ -233,7 +258,7 @@
           "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__2.label"
         }
       ]
-    },    
+    },
     {
       "type": "color_scheme",
       "id": "color_scheme",

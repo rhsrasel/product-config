@@ -89,6 +89,44 @@
             {%- case block.type -%}
               {%- when '@app' -%}
                 {% render block %}
+
+              {%- when 'product_video' -%}
+                {% render 'product-video', product: product, block: block %}
+
+              {%- when 'product_config' -%}
+                {% render 'product-config', product: product, block: block %}
+
+              {%- when 'shipping_date' -%}
+                {% if product.selected_or_first_available_variant.available %}
+                  {% liquid
+                    assign shipping_type = block.settings.shipping_type
+                    assign label = block.settings.standard_label
+                    assign ship_days = block.settings.shipping_days
+
+                    if shipping_type == 'quick'
+                      assign label = block.settings.quick_label
+                    endif
+
+                    if product.metafields.custom.standard_ship_days != blank
+                      assign ship_days = product.metafields.custom.standard_ship_days
+                    endif
+
+                    if product.metafields.custom.quick_ship
+                      assign ship_days = product.metafields.custom.quick_ship_days
+                    endif
+
+                    assign seconds = ship_days | times: 86400
+                    assign estimated_date = 'now' | date: '%s' | plus: seconds
+                  %}
+
+                  <p
+                    class="product__text"
+                    {{ block.shopify_attributes }}
+                  >
+                    {{ label }}
+                    {{ estimated_date | date: '%B %d, %Y' }}
+                  </p>
+                {% endif %}
               {%- when 'text' -%}
                 <p
                   class="product__text inline-richtext{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}"
@@ -746,6 +784,62 @@
   "blocks": [
     {
       "type": "@app"
+    },
+    {
+      "type": "product_video",
+      "name": "Product video"
+    },
+    {
+      "type": "product_config",
+      "name": "Multi step configurator",
+      "limit": 1
+    },
+    {
+      "type": "shipping_date",
+      "name": "Estimated ship date",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Shipping date",
+          "info": "Will apply to all products. If you need to control for a specific product, edit product metafields."
+        },
+        {
+          "type": "select",
+          "id": "shipping_type",
+          "label": "Shipping type",
+          "options": [
+            {
+              "value": "standard",
+              "label": "Standard"
+            },
+            {
+              "value": "quick",
+              "label": "Quick"
+            }
+          ],
+          "default": "standard"
+        },
+        {
+          "type": "text",
+          "id": "standard_label",
+          "label": "Label",
+          "default": "Estimated ship date: ",
+          "visible_if": "{{ block.settings.shipping_type == 'standard' }}"
+        },
+        {
+          "type": "text",
+          "id": "quick_label",
+          "label": "Label",
+          "default": "Quick ship date: ",
+          "visible_if": "{{ block.settings.shipping_type == 'quick' }}"
+        },
+        {
+          "type": "number",
+          "id": "shipping_days",
+          "label": "Shipping days",
+          "default": 4
+        }
+      ]
     },
     {
       "type": "text",
