@@ -9,6 +9,9 @@
  */
 {
   "current": {
+    "enable_tawk": true,
+    "tawk_property_id": "6a059fba85bded1c2ed2b9fc",
+    "tawk_widget_id": "default",
     "logo_width": 90,
     "type_header_font": "assistant_n4",
     "heading_scale": 100,
@@ -138,7 +141,7 @@
     "blocks": {
       "9365423049038898845": {
         "type": "shopify://apps/tawk-to-live-chat/blocks/widget-embed-code/91169e75-f163-40ce-90e0-9059f3c9b772",
-        "disabled": false,
+        "disabled": true,
         "settings": {}
       }
     },

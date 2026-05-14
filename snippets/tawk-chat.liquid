@@ -1,0 +1,26 @@
+{% if settings.enable_tawk
+  and settings.tawk_property_id != blank
+  and settings.tawk_widget_id != blank
+%}
+
+  <script>
+    window.addEventListener('load', function () {
+      var Tawk_API = Tawk_API || {};
+      var Tawk_LoadStart = new Date();
+
+      var script = document.createElement('script');
+
+      script.async = true;
+
+      script.src =
+        'https://embed.tawk.to/{{ settings.tawk_property_id }}/{{ settings.tawk_widget_id }}';
+
+      script.charset = 'UTF-8';
+
+      script.setAttribute('crossorigin', '*');
+
+      document.body.appendChild(script);
+    });
+  </script>
+
+{% endif %}
