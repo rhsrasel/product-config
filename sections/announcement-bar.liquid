@@ -18,6 +18,7 @@
   {{ 'component-list-social.css' | asset_url | stylesheet_tag }}
 {% endif %}
 
+<announcement-bar class="hidden">
 <div
   class="utility-bar color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator and section.blocks.size > 0 %} utility-bar--bottom-border{% elsif section.settings.show_line_separator and section.settings.show_social and social_icons%} utility-bar--bottom-border-social-only{% endif %}{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header-localization{% endif %}"
 >
@@ -86,6 +87,8 @@
                 aria-roledescription="{{ 'sections.announcements.announcement' | t }}"
                 aria-label="{{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
                 tabindex="-1"
+                data-message 
+                data-id="{{ forloop.index }}"
               >
                 <div
                   class="announcement-bar__announcement"
@@ -104,6 +107,17 @@
                       {%- if block.settings.link != blank -%}
                         {{- 'icon-arrow.svg' | inline_asset_content -}}
                       {%- endif -%}
+
+                      <button
+                        type="button"
+                        class="dismiss-button"
+                        data-dismiss
+                        aria-label="Dismiss message"
+                      >
+                        <span class="svg-wrapper">
+                          {{ 'icon-close.svg' | inline_asset_content }}
+                        </span>
+                      </button>
                     </p>
                     {%- if block.settings.link != blank -%}
                       </a>
@@ -161,6 +175,25 @@
     </div>
   </div>
 </div>
+</announcement-bar>
+
+<script src="{{ 'announce-bar.js' | asset_url }}" defer="defer"></script>
+
+{% stylesheet %}
+  .dismiss-button {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: currentColor;
+    margin-left: 20px;
+    cursor: pointer;
+  }
+
+  .dismiss-button .svg-wrapper {
+    width: 12px;
+    height: 12px;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {

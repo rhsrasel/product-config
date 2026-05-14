@@ -44,7 +44,6 @@
         "shipping_date_TrP3BF": {
           "type": "shipping_date",
           "settings": {
-            "text": "Estimated ship date:",
             "shipping_days": 4
           }
         },
