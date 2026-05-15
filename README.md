@@ -4,6 +4,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?color=informational)](/.github/CONTRIBUTING.md)
 
 [Getting started](#getting-started) |
+[Customer-Group-Aware Collection Page](#customer-group-aware-collection-page) |
 [Staying up to date with Dawn changes](#staying-up-to-date-with-dawn-changes) |
 [Developer tools](#developer-tools) |
 [Contributing](#contributing) |
@@ -26,6 +27,46 @@ We recommend using Dawn as a starting point for theme development. [Learn more o
 > If you're building a theme for the Shopify Theme Store, then you can use Dawn as a starting point. However, the theme that you submit needs to be [substantively different from Dawn](https://shopify.dev/themes/store/requirements#uniqueness) so that it provides added value for merchants. Learn about the [ways that you can use Dawn](https://shopify.dev/themes/tools/dawn#ways-to-use-dawn).
 
 Please note that the main branch may include code for features not yet released. The "stable" version of Dawn is available in the theme store.
+
+## Customer-Group-Aware Collection Page
+
+This Liquid snippet checks whether the logged-in customer has the wholesale customer tag and dynamically changes the displayed collection accordingly.
+```sh
+{% liquid
+  assign collection = collection
+
+  assign is_wholesale_customer = false
+
+  if customer and customer.tags contains 'wholesale'
+    assign is_wholesale_customer = true
+    assign collection = collections['wholesale']
+  endif
+%}
+```
+
+1. The current collection is assigned by default:
+```sh
+assign collection = collection
+```
+2. A boolean flag is initialized to track wholesale customers:
+```sh
+assign is_wholesale_customer = false
+```
+3. If a customer is `logged in`, and the customer has the `wholesale` tag, it shows product from `wholesale` collection
+```sh
+assign is_wholesale_customer = true
+assign collection = collections['wholesale']
+```
+
+**Result**
+* Regular visitors/customers see the original collection.
+* Wholesale customers automatically see products from the dedicated `wholesale` collection.
+
+**Requirements**
+* A customer tag named: `wholesale`
+* A Shopify collection handle named: `wholesale`
+* Products tagged `wholesale-only` visible only to customers tagged `wholesale`
+
 
 ## Staying up to date with Dawn changes
 
