@@ -73,6 +73,8 @@ assign collection = collections['wholesale']
     {% if wholesale_product == false and is_wholesale_customer %}
         {% continue %}
     {% endif %}
+    
+    {% render 'card-product', card_product: product %}
 {% endfor %}
 ```
 
