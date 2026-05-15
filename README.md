@@ -57,6 +57,24 @@ assign is_wholesale_customer = false
 assign is_wholesale_customer = true
 assign collection = collections['wholesale']
 ```
+4. Inside the product loop, the following logic ensures wholesale and retail customers only see the appropriate products:
+```sh
+{%- for product in collection.products -%}
+    {% assign wholesale_product = false %}
+
+    {% if product.tags contains 'wholesale-only' %}
+        {% assign wholesale_product = true %}
+    {% endif %}
+
+    {% if wholesale_product and is_wholesale_customer == false %}
+        {% continue %}
+    {% endif %}
+
+    {% if wholesale_product == false and is_wholesale_customer %}
+        {% continue %}
+    {% endif %}
+{% endfor %}
+```
 
 **Result**
 * Regular visitors/customers see the original collection.
